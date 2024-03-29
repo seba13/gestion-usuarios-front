@@ -1,0 +1,68 @@
+@import url('./normalize.css');
+
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fonts/Montserrat-Bold.ttf');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fonts/Montserrat-Medium.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fonts/Montserrat-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fonts/Montserrat-Light.ttf');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../assets/fonts/Montserrat-Thin.ttf');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --color-blue-primary: #1089D3;
+    --color-blue-secondary: #12B1D1;
+    --color-blue-tertiary: #8ECAE6;
+    --color-yellow-primary: #FFBE0B;
+    --color-background-panel: #F8F9FD;
+    --color-red-primary: #D62828;
+    --color-red-secondary: #F5CAC3;
+
+}
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    min-width: 320px;
+    min-height: 100dvh;
+    font-family: 'Montserrat', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
