@@ -1,10 +1,14 @@
 import "./App.css";
-import { FormLogin } from "./pages/FormLogin/FormLogin";
+import { AuthProvider } from "./context/AuthContext";
+import { AppRouter } from "./router/RouterApp";
 
 function App() {
   return (
     <>
-      <FormLogin></FormLogin>
+      <AuthProvider>
+        <AppRouter></AppRouter>
+      </AuthProvider>
+      {/* <FormLogin></FormLogin> */}
     </>
   );
 }

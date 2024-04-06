@@ -53,9 +53,16 @@
         }
 
 
-        .paragraph {
+        .anchor {
             font-weight: 500;
+            padding-bottom: 2px;
             color: var(--color-blue-primary, #1089D3);
+            cursor: pointer;
+
+            &:hover {
+                border-bottom: 2px solid var(--color-blue-primary);
+                margin-bottom: -2px;
+            }
         }
     }
 

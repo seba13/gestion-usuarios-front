@@ -1,0 +1,88 @@
+.wrapper {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100dvh;
+    background-color: rgba(0, 0, 0, 0.251);
+    z-index: 2000;
+    top: 0;
+    left: 0;
+
+    & .dialog {
+        max-width: 300px;
+        width: 300px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        transform: translate(-50%, -50%) scale(.6);
+        background-color: aliceblue;
+        border-radius: 20px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        transition: transform .25s ease, opacity .25s;
+
+        & .container-title {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+
+            & .title {
+                margin-inline: 1rem;
+                color: var(--color-blue-primary);
+            }
+
+            & .cross {
+                cursor: pointer;
+                padding: .5rem;
+                position: absolute;
+                top: 0px;
+                right: 5px;
+                font-size: 20px;
+
+            }
+
+        }
+
+        & .container-message {
+            padding: .5rem;
+            font-weight: 500;
+            color: var(--color-blue-primary);
+        }
+
+
+        & .container-btn {
+            padding: 1rem;
+            display: flex;
+
+            &>input {
+                margin-inline: 1rem;
+            }
+        }
+    }
+
+    &.show {
+        display: inherit;
+
+        & .dialog {
+
+            animation: fade-in .25s ease forwards;
+        }
+
+    }
+}
+
+
+@keyframes fade-in {
+
+    from {}
+
+    to {
+        transform: translate(-50%, -50%) scale(1) ;
+        opacity: 1;
+    }
+}

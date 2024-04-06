@@ -1,0 +1,32 @@
+.dashboard {
+    display: flex;
+    height: 100dvh;
+    width: 100%;
+    flex-direction: column;
+
+    &>:last-child {
+        flex-grow: 1;
+    }
+
+    & nav {
+        order: 2;
+    }
+}
+
+@media screen and (min-width: 769px) {
+
+    .dashboard {
+        flex-direction: row;
+
+
+        &>:last-child {
+            flex-grow: 0;
+        }
+
+        & nav {
+            order: 0;
+        }
+    }
+
+
+}

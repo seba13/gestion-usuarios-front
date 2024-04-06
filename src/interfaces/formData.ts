@@ -1,7 +1,11 @@
 export interface InputAttr {
   value: string;
   type: string;
-  required: boolean;
+  required?: boolean;
+  maxLength?: number;
+  minLength?: number;
+  patter?: RegExp;
+  name?: string;
 }
 
 export interface FormData {
