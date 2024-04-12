@@ -89,12 +89,12 @@ export const NavbarDashboard = () => {
         </NavLink>
 
         <p className={`${styles["nav-item"]}`} onClick={handleLogout}>
-          <div className={`${styles["container-link"]}`}>
+          <span className={`${styles["container-link"]}`}>
             <span className={`${styles.icon}`}>
               <i className="fa-solid fa-right-from-bracket"></i>
             </span>
             <span className={`${styles.text}`}>Salir</span>
-          </div>
+          </span>
         </p>
       </ul>
     </nav>

@@ -1,0 +1,87 @@
+.container-notifications {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.notification {
+    /* position: absolute; */
+    margin-top: .5rem;
+    margin-right: .5rem;
+    position: relative;
+    top: 10px;
+    max-width: 350px;
+    width: 350px;
+    border-left: 6px;
+    background-color: rgba(219, 234, 254, 0.5);
+    border-left: 6px solid;
+    border-radius: .5rem;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fade-in .25s ease forwards, fade-out .25s 4s ease forwards;
+
+    & .close-notification {
+        cursor: pointer;
+        padding: .5rem;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+    }
+
+    &.error {
+        border-left-color: var(--color-red-primary);
+        color: var(--color-red-primary);
+    }
+
+    &.success {
+        border-left-color: var(--color-blue-primary);
+        color: var(--color-blue-primary);
+    }
+
+    .container-text {
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+        width: 100%;
+        padding: 1rem 0;
+
+        i {
+            font-size: 2rem;
+            margin-inline: .5rem;
+        }
+
+        & .text {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            & h2 {
+                margin: 0;
+                margin-bottom: .5rem;
+                font-size: 16px;
+            }
+
+            & p {
+                margin: 0;
+                font-size: 16px;
+            }
+        }
+    }
+
+}
+
+@keyframes fade-in {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-out {
+    to {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+}

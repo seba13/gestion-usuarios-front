@@ -6,6 +6,7 @@ export interface InputAttr {
   minLength?: number;
   patter?: RegExp;
   name?: string;
+  see?: boolean;
 }
 
 export interface FormData {

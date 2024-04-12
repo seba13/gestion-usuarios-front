@@ -7,6 +7,7 @@ import { Dashboard } from "../dashboard/pages/Dashboard/Dashboard";
 import { ListEmployees } from "../dashboard/pages/ListEmployees/ListEmployees";
 import { FormEmployee } from "../dashboard/pages/FormEmployee/FormEmployee";
 import { Reports } from "../dashboard/pages/Reports/Reports";
+import { ProtectedRoute } from "../dashboard/components/ProtectedRoute/ProtectedRoute";
 
 // import { AuthenticateUser } from "../interfaces/authenticateUser";
 // import { Dashboard } from "../pages/Dashboard/Dashboard";
@@ -22,15 +23,27 @@ export const AppRouter = () => {
       children: [
         {
           path: "/",
-          Component: ListEmployees,
+          element: (
+            <ProtectedRoute>
+              <ListEmployees />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/nuevo-colaborador",
-          Component: FormEmployee,
+          element: (
+            <ProtectedRoute>
+              <FormEmployee />
+            </ProtectedRoute>
+          ),
         },
         {
           path: "/generar-reportes",
-          Component: Reports,
+          element: (
+            <ProtectedRoute>
+              <Reports />
+            </ProtectedRoute>
+          ),
         },
       ],
     },
