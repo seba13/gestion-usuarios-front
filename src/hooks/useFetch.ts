@@ -8,12 +8,10 @@ export const enum FetchMethods {
   "DELETE" = "DELETE",
 }
 
-
 export const useFetch = ({ url, method }: { url: string; method: FetchMethods }) => {
   const [data, setData] = useState<FetchData>({ data: null, error: null, loading: false });
 
   const handleFetch = (dataFetch?: object) => {
-
     return fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -25,12 +23,12 @@ export const useFetch = ({ url, method }: { url: string; method: FetchMethods })
         if (!response.ok) {
           console.log("aca");
           const enum MessageError {
-            "UNHAUTORIZED" = "usuario o contraseña incorrecta",
+            "UNAUTHORIZED" = "usuario o contraseña incorrecta",
             "FORBIDDEN" = "usuario no tiene permisos para acceder a este recurso",
             "INTERNAL_SERVER_ERROR" = "Ocurrió un error en el",
           }
 
-          const errorMessage = response.status === 401 ? MessageError.UNHAUTORIZED : MessageError.FORBIDDEN || MessageError.INTERNAL_SERVER_ERROR;
+          const errorMessage = response.status === 401 ? MessageError.UNAUTHORIZED : MessageError.FORBIDDEN || MessageError.INTERNAL_SERVER_ERROR;
 
           setData({
             loading: false,
