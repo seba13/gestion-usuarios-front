@@ -4,10 +4,11 @@ import { NotFound } from "../pages/NotFound/NotFound";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Dashboard } from "../dashboard/pages/Dashboard/Dashboard";
-import { ListEmployees } from "../dashboard/pages/ListEmployees/ListEmployees";
+// import { ListEmployees } from "../dashboard/pages/ListEmployees/ListEmployees";
 import { FormEmployee } from "../dashboard/pages/FormEmployee/FormEmployee";
 import { Reports } from "../dashboard/pages/Reports/Reports";
 import { ProtectedRoute } from "../dashboard/components/ProtectedRoute/ProtectedRoute";
+import { ListEmployees2 } from "../dashboard/pages/ListEmployees/ListEmployees2";
 
 // import { AuthenticateUser } from "../interfaces/authenticateUser";
 // import { Dashboard } from "../pages/Dashboard/Dashboard";
@@ -25,7 +26,7 @@ export const AppRouter = () => {
           path: "/",
           element: (
             <ProtectedRoute>
-              <ListEmployees />
+              <ListEmployees2 />
             </ProtectedRoute>
           ),
         },

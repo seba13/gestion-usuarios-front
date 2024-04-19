@@ -16,6 +16,10 @@
         color: #fff;
     }
 
+    label {
+        text-align: center;
+    }
+
     & input[type='submit'] {
         max-width: 300px;
     }

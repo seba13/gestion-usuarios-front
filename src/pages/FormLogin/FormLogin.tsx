@@ -42,7 +42,7 @@ export const FormLogin = () => {
 
   const { handleAddNotification, notifications, handleDeleteNotification, setTimeoutNotification } = UseNotification();
 
-  const { data, handleFetch } = useFetch({ method: FetchMethods.POST, url: "http://localhost:80/login" });
+  const { data, handleFetch } = useFetch({ method: FetchMethods.POST, url: "http://localhost:80/auth-user" });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
