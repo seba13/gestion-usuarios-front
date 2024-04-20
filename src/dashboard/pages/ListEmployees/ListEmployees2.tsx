@@ -69,11 +69,11 @@ export const ListEmployees2 = () => {
 
   const [filters, setFilters] = useState<Filter>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    nombre: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    paterno: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    materno: { value: null, matchMode: FilterMatchMode.IN },
-    rut: { value: null, matchMode: FilterMatchMode.EQUALS },
-    sexo: { value: null, matchMode: FilterMatchMode.EQUALS },
+    nombre: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    paterno: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    materno: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    rut: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    sexo: { value: null, matchMode: FilterMatchMode.CONTAINS },
     estado: { value: "Vigente", matchMode: FilterMatchMode.EQUALS },
   });
 
@@ -143,7 +143,6 @@ export const ListEmployees2 = () => {
     handleFetch().then((data: Result) => {
       if (data.message) {
         const employeesArr: Employee[] = data.message as Employee[];
-
         setEmployees(employeesArr);
 
         // console.log(employees);
