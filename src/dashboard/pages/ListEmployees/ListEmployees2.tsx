@@ -15,6 +15,7 @@ import "primereact/resources/primereact.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 
 import styles from "./ListEmployees.module.css";
+import "./datatable.css";
 // import { classNames } from "primereact/utils";
 
 // activo: 0;
@@ -158,6 +159,7 @@ export const ListEmployees2 = () => {
   return (
     <div className={`${styles.container} animate__animated animate__fadeInLeft `} style={{ zIndex: -1 }}>
       <DataTable
+        scrollHeight="400px"
         value={employees}
         paginator
         rows={10}
@@ -168,9 +170,9 @@ export const ListEmployees2 = () => {
         globalFilterFields={["nombre", "paterno", "materno", "rut", "sexo", "estado"]}
         header={header}
         scrollable
-        scrollHeight="400px" className="mt-4"
+        className={`${styles.table} mt-4`}
         emptyMessage="No se encontraron empleados">
-        <Column header="Rut" field="rut" filterField="rut" style={{ minWidth: "12rem" }} filter filterPlaceholder="Buscar por Apellido Paterno"  />
+        <Column header="Rut" field="rut" filterField="rut" style={{ minWidth: "12rem" }} filter filterPlaceholder="Buscar por Apellido Paterno" />
 
         <Column field="nombre" header="Nombre" filter filterPlaceholder="Buscar por nombre" style={{ minWidth: "12rem" }} />
         <Column header="Apellido Paterno" field="paterno" filterField="paterno" style={{ minWidth: "12rem" }} filter filterPlaceholder="Buscar por Apellido Paterno" />
