@@ -1,6 +1,5 @@
 import { createContext, useMemo, useState } from "react";
 import { AuthenticateUser } from "../interfaces/authenticateUser";
-
 import Cookies from "universal-cookie";
 
 export const AuthContext = createContext<AuthenticateUser | null>(null);
@@ -11,7 +10,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleChangeToken = useMemo(
     () => () => {
-      setToken(cookies.get("cookie-token"));
+      try {
+        setToken(cookies.get("cookie-token"));
+      } catch (error) {
+        cookies.remove("cookie-token");
+        setToken(null);
+      }
     },
     []
   );
