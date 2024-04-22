@@ -61,7 +61,109 @@
     }
 
 
+
+
     .nav {
+        height: 100dvh;
+        max-height: 100dvh;
+        position: relative;
+        width: 40px;
+
+        transition: width .25s ease;
+
+        &.open {
+
+            max-width: 280px;
+            width: 280px;
+
+            & ul {
+                width: 280px;
+            }
+        }
+
+        & .btn-toggle {
+            display: block;
+            position: fixed;
+            top: 10px;
+            padding: 8px;
+            cursor: pointer;
+
+            & span {
+                display: block;
+                width: 24px;
+                height: 3px;
+                background-color: #fff;
+
+                &:first-child {
+                    transform: translateY(-4px);
+                }
+
+                &:last-child {
+                    transform: translateY(4px);
+                }
+
+            }
+
+
+
+        }
+
+        & ul {
+
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            top: 30px;
+            overflow: hidden;
+
+
+            & .nav-item {
+                text-decoration: none;
+                cursor: pointer;
+                height: 40px;
+
+
+                &.activo {
+                    & .container-link {
+                        background-color: #fff;
+
+                        & .text,
+                        & .icon {
+                            color: var(--color-blue-primary);
+                        }
+                    }
+                }
+
+                & .container-link {
+                    display: flex;
+                    flex-wrap: nowrap;
+                    align-items: center;
+                    width: 100%;
+                    transition: background-color .25s ease;
+
+                    & .icon {
+                        padding-left: .5rem;
+                        margin-right: 20px;
+                    }
+
+                    & .text {
+                        display: inline;
+                        text-wrap: nowrap;
+                        font-weight: 400;
+                        text-transform: uppercase;
+                        /* width: 180px; */
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+
+
+    /* .nav {
         background-color: var(--color-blue-primary);
         width: 42px;
         height: 100dvh;
@@ -74,7 +176,6 @@
             display: block;
             position: fixed;
             top: 10px;
-            /* left: 8px; */
             padding: 8px;
             cursor: pointer;
 
@@ -104,7 +205,6 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            /* justify-content: space-evenly; */
             padding: 0;
 
 
@@ -142,7 +242,6 @@
 
                 & .icon {
                     flex-grow: 1;
-                    /* margin-right: 1rem; */
                 }
 
                 & .text {
@@ -168,6 +267,6 @@
         }
 
 
-    }
+    } */
 
 }

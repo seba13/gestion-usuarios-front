@@ -1,34 +1,23 @@
 import { createContext, useMemo, useState } from "react";
 import { AuthenticateUser } from "../interfaces/authenticateUser";
 
+import Cookies from "universal-cookie";
+
 export const AuthContext = createContext<AuthenticateUser | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState<string | null>(null);
+  const cookies = new Cookies();
+  const [token, setToken] = useState<string | null>(cookies.get("cookie-token"));
 
   const handleChangeToken = useMemo(
-    () =>
-      ({ token }: { token: string }) => {
-        console.log("aca");
-
-        console.log(token);
-
-        setToken(() => {
-          //   const jwt = window.localStorage.getItem("token") || "";
-          const jwt = token;
-
-          console.log(token);
-
-          //proceso de validacion
-          //llamar a utils validate jwt fetch en server
-
-          return jwt == "123456" ? jwt : "";
-        });
-      },
+    () => () => {
+      setToken(cookies.get("cookie-token"));
+    },
     []
   );
 
   const logout = () => {
+    cookies.remove("cookie-token");
     setToken(null);
   };
 

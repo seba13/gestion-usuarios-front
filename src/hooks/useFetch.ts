@@ -19,6 +19,7 @@ export const useFetch = ({ url, method }: { url: string; method: FetchMethods })
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         method,
         body: dataFetch ? JSON.stringify(dataFetch) : null,
       })

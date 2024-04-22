@@ -82,7 +82,7 @@ export const FormLogin = () => {
         const { data: fechData } = data;
 
         if (fechData.code === 200) {
-          handleChangeToken({ token: "123456" });
+          handleChangeToken();
           navigate("/");
         }
       }
