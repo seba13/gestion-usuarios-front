@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+
 import { FormEvent, useEffect, useState } from "react";
 import { Employee } from "../../../interfaces/Employees";
 import { FetchMethods, useFetch } from "../../../hooks/useFetch";
@@ -19,6 +22,8 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primeicons/primeicons.css";
 import styles from "./ListEmployees.module.css";
 import "./datatable.css";
+
+import { LoadingSpinner } from "../../../components/LoadingSpinner/LoadingSpinner";
 // import { classNames } from "primereact/utils";
 
 // activo: 0;
@@ -112,13 +117,51 @@ export const ListEmployees2 = () => {
     setGlobalFilterValue(value);
   };
 
+  const headersPDF = [["Rut", "Nombre", "Apellido Paterno", "Apellido Materno", "Sexo", "Estado", "Fecha Ingreso", "Fecha Despido"]];
+
+  const getCols = employees?.map((employee) => {
+    const fechaIngreso = new Date(employee.fecIngreso);
+
+    const anioIngreso = fechaIngreso.getFullYear();
+
+    const mesIngreso = fechaIngreso.getMonth() + 1;
+    const diaIngreso = fechaIngreso.getDate();
+
+    const fechaIngresoFormat = `${anioIngreso}-${mesIngreso < 10 ? "0" + mesIngreso : mesIngreso}-${diaIngreso < 10 ? "0" + diaIngreso : diaIngreso}`;
+
+    let fechaDespidoFormat = "";
+
+    if (employee.fecDespido) {
+      const fechaDespido = new Date(employee.fecIngreso);
+
+      const anioDespido = fechaDespido.getFullYear();
+
+      const mesDepido = fechaDespido.getMonth() + 1;
+      const diaDespido = fechaDespido.getDate();
+
+      fechaDespidoFormat = `${anioDespido}-${mesDepido < 10 ? "0" + mesDepido : mesDepido}-${diaDespido < 10 ? "0" + diaDespido : diaDespido}`;
+    }
+
+    return [employee.rut, employee.nombre, employee.paterno, employee.materno, employee.sexo, employee.estado, fechaIngresoFormat, fechaDespidoFormat];
+  });
+
+  const exportPdf = () => {
+    const doc = new jsPDF("portrait", "pt", "A4");
+    doc.setFontSize(20);
+    doc.text("Reporte trabajadores", 40, 40);
+    autoTable(doc, { head: headersPDF, body: getCols, startY: 50 });
+
+    doc.save("empleados.pdf");
+  };
+
   const renderHeader = () => {
     return (
-      <div className="flex justify-content-end">
+      <div className="flex justify-content-center gap-2">
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
           <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
         </span>
+        <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} tooltip="PDF" tooltipOptions={{ position: "bottom", mouseTrack: true, mouseTrackTop: 15 }} />
       </div>
     );
   };
@@ -171,6 +214,7 @@ export const ListEmployees2 = () => {
 
   return (
     <div className={`${styles.container} animate__animated animate__fadeInLeft `} style={{ zIndex: -1 }}>
+      {loading && <LoadingSpinner />}
       <DataTable
         scrollHeight="400px"
         value={employees}

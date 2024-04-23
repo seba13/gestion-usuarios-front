@@ -12,6 +12,7 @@ import { FetchMethods, useFetch } from "../../hooks/useFetch";
 import { useEffect } from "react";
 import { Notification } from "../../components/Notification/Notification";
 import { UseNotification } from "../../hooks/useNotification";
+import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
 // import { FormEvent } from "react";
 
 const initialData: FormData = {
@@ -42,7 +43,7 @@ export const FormLogin = () => {
 
   const { handleAddNotification, notifications, handleDeleteNotification, setTimeoutNotification } = UseNotification();
 
-  const { data, handleFetch } = useFetch({ method: FetchMethods.POST });
+  const { loading, setLoading, data, handleFetch } = useFetch({ method: FetchMethods.POST });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -64,6 +65,7 @@ export const FormLogin = () => {
 
     if (data.loading === false) {
       if (validateAttempts()) {
+        setLoading(true);
         handleFetch({
           dataFetch: {
             usuario: form.username.value,
@@ -79,6 +81,7 @@ export const FormLogin = () => {
   };
 
   useEffect(() => {
+    setLoading(false);
     if (data && !data.error) {
       if (data.data) {
         console.log("aca");
@@ -101,6 +104,7 @@ export const FormLogin = () => {
 
   return (
     <div className={`${styles["container-login"]} animate__animated animate__fadeIn`}>
+      {loading && <LoadingSpinner />}
       <form className={`${styles["form-login"]}`} onSubmit={onSubmit}>
         <h1 className={styles["form-title"]}>INICIAR SESIÓN</h1>
         <div className={`${styles["form-group"]} ${styles["form-group__df"]} ${styles["form-group__column"]} ${styles["form-group__fg1"]}`}>

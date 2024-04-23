@@ -10,7 +10,7 @@ export const enum FetchMethods {
 
 export const useFetch = ({ method }: { method: FetchMethods }) => {
   const [data, setData] = useState<FetchData>({ data: null, error: null, loading: false });
-
+  const [loading, setLoading] = useState(false);
   // TODO IMPLEMENTAR LOADING : TRUE CUANDO SE HACE LA PETICION FETCH AL SERVIDOR
 
   const handleFetch = useCallback(
@@ -60,5 +60,5 @@ export const useFetch = ({ method }: { method: FetchMethods }) => {
     [setData, method]
   );
 
-  return { data, setData, handleFetch };
+  return { data, setData, handleFetch, loading, setLoading };
 };

@@ -33,7 +33,7 @@ export const Employee = () => {
     <>
       {isLoading && <p>cargando</p>}
 
-      {empleado && <div>Employee</div>}
+      {empleado && <div>Employee {empleado.rut}</div>}
     </>
   );
 };
