@@ -42,7 +42,7 @@ export const FormLogin = () => {
 
   const { handleAddNotification, notifications, handleDeleteNotification, setTimeoutNotification } = UseNotification();
 
-  const { data, handleFetch } = useFetch({ method: FetchMethods.POST, url: "http://localhost:80/auth-user" });
+  const { data, handleFetch } = useFetch({ method: FetchMethods.POST });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,8 +65,11 @@ export const FormLogin = () => {
     if (data.loading === false) {
       if (validateAttempts()) {
         handleFetch({
-          usuario: form.username.value,
-          contrasena: form.password.value,
+          dataFetch: {
+            usuario: form.username.value,
+            contrasena: form.password.value,
+          },
+          url: "http://localhost:80/auth-user",
         });
       }
 

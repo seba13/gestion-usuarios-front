@@ -9,6 +9,7 @@ import { FormEmployee } from "../dashboard/pages/FormEmployee/FormEmployee";
 import { Reports } from "../dashboard/pages/Reports/Reports";
 import { ProtectedRoute } from "../dashboard/components/ProtectedRoute/ProtectedRoute";
 import { ListEmployees2 } from "../dashboard/pages/ListEmployees/ListEmployees2";
+import { Employee } from "../dashboard/pages/Employee/Employee";
 
 // import { AuthenticateUser } from "../interfaces/authenticateUser";
 // import { Dashboard } from "../pages/Dashboard/Dashboard";
@@ -43,6 +44,14 @@ export const AppRouter = () => {
           element: (
             <ProtectedRoute>
               <Reports />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/empleado/:rut",
+          element: (
+            <ProtectedRoute>
+              <Employee />
             </ProtectedRoute>
           ),
         },

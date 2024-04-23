@@ -8,13 +8,13 @@ export const enum FetchMethods {
   "DELETE" = "DELETE",
 }
 
-export const useFetch = ({ url, method }: { url: string; method: FetchMethods }) => {
+export const useFetch = ({ method }: { method: FetchMethods }) => {
   const [data, setData] = useState<FetchData>({ data: null, error: null, loading: false });
 
   // TODO IMPLEMENTAR LOADING : TRUE CUANDO SE HACE LA PETICION FETCH AL SERVIDOR
 
   const handleFetch = useCallback(
-    (dataFetch?: object): Promise<Result> => {
+    ({ dataFetch, url }: { dataFetch?: object; url: string }): Promise<Result> => {
       return fetch(url, {
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +57,7 @@ export const useFetch = ({ url, method }: { url: string; method: FetchMethods })
           return json;
         });
     },
-    [setData, url, method]
+    [setData, method]
   );
 
   return { data, setData, handleFetch };

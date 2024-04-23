@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import { FormEvent, useEffect, useState } from "react";
 import { Employee } from "../../../interfaces/Employees";
 import { FetchMethods, useFetch } from "../../../hooks/useFetch";
@@ -5,7 +7,7 @@ import { Result } from "../../../interfaces/fetchData";
 import { FilterMatchMode } from "primereact/api";
 import { Tag } from "primereact/tag";
 import { Dropdown } from "primereact/dropdown";
-
+import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { InputText } from "primereact/inputtext";
@@ -14,6 +16,7 @@ import "primeflex/primeflex.css";
 import "primereact/resources/primereact.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 
+import "primeicons/primeicons.css";
 import styles from "./ListEmployees.module.css";
 import "./datatable.css";
 // import { classNames } from "primereact/utils";
@@ -66,8 +69,8 @@ export const ListEmployees2 = () => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState<Employee[]>();
   const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const { handleFetch } = useFetch({ url: "http://localhost/empleados", method: FetchMethods.GET });
-
+  const { handleFetch } = useFetch({ method: FetchMethods.GET });
+  const navigate = useNavigate();
   const [filters, setFilters] = useState<Filter>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     nombre: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -141,7 +144,7 @@ export const ListEmployees2 = () => {
   // };
 
   useEffect(() => {
-    handleFetch().then((data: Result) => {
+    handleFetch({ url: "http://localhost/empleados" }).then((data: Result) => {
       if (data.message) {
         const employeesArr: Employee[] = data.message as Employee[];
         setEmployees(employeesArr);
@@ -153,6 +156,16 @@ export const ListEmployees2 = () => {
       }
     });
   }, []);
+
+  const handleNavigate = (rut: string) => {
+    rut = rut.split("-")[0];
+
+    navigate("/empleado/" + rut);
+  };
+
+  const actionBodyTemplate = (rowData: Employee) => {
+    return <Button type="button" icon="pi pi-user-edit" rounded onClick={() => handleNavigate(rowData.rut)}></Button>;
+  };
 
   const header = renderHeader();
 
@@ -181,7 +194,9 @@ export const ListEmployees2 = () => {
 
         <Column header="Sexo" field="sexo" filterField="sexo" style={{ minWidth: "12rem" }} filter filterPlaceholder="Buscar por Apellido Paterno" />
 
-        <Column field="estado" header="Estado" showFilterMenu={false} filterMenuStyle={{ width: "14rem" }} style={{ minWidth: "12rem" }} body={statusBodyTemplate} filter filterElement={statusRowFilterTemplate} frozen alignFrozen="right" />
+        <Column field="estado" header="Estado" showFilterMenu={false} filterMenuStyle={{ width: "14rem" }} style={{ minWidth: "12rem" }} body={statusBodyTemplate} filter filterElement={statusRowFilterTemplate} />
+
+        <Column header="Acción" headerStyle={{ width: "5rem", textAlign: "center" }} bodyStyle={{ textAlign: "center", overflow: "visible" }} body={actionBodyTemplate} frozen alignFrozen="right" />
       </DataTable>
     </div>
   );
