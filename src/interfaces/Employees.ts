@@ -16,7 +16,7 @@ export interface Employee {
   estadoCivil: string;
   fecDespido: string | null;
   fecIngreso: string;
-  fecnac: string;
+  fecNac: string;
   idEmpleado: string;
   materno: string;
   paterno: string;

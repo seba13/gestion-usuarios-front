@@ -18,8 +18,8 @@ import { InputText } from "primereact/inputtext";
 import "primeflex/primeflex.css";
 import "primereact/resources/primereact.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
-
 import "primeicons/primeicons.css";
+
 import styles from "./ListEmployees.module.css";
 import "./datatable.css";
 
@@ -151,7 +151,15 @@ export const ListEmployees2 = () => {
     doc.text("Reporte trabajadores", 40, 40);
     autoTable(doc, { head: headersPDF, body: getCols, startY: 50 });
 
-    doc.save("empleados.pdf");
+    // doc.save("empleados.pdf");
+
+    const blob = new Blob([doc.output()], { type: "application/pdf" });
+
+    // Crear una URL para el blob
+    const url = URL.createObjectURL(blob);
+
+    // Mostrar la URL en el navegador
+    window.open(url, "_blank");
   };
 
   const renderHeader = () => {

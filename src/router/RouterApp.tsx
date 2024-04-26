@@ -26,7 +26,7 @@ export const AppRouter = () => {
         {
           path: "/",
           element: (
-            <ProtectedRoute>
+            <ProtectedRoute id={1}>
               <ListEmployees2 />
             </ProtectedRoute>
           ),
@@ -34,7 +34,7 @@ export const AppRouter = () => {
         {
           path: "/nuevo-colaborador",
           element: (
-            <ProtectedRoute>
+            <ProtectedRoute id={2}>
               <FormEmployee />
             </ProtectedRoute>
           ),
@@ -42,7 +42,7 @@ export const AppRouter = () => {
         {
           path: "/generar-reportes",
           element: (
-            <ProtectedRoute>
+            <ProtectedRoute id={3}>
               <Reports />
             </ProtectedRoute>
           ),
@@ -50,7 +50,7 @@ export const AppRouter = () => {
         {
           path: "/empleado/:rut",
           element: (
-            <ProtectedRoute>
+            <ProtectedRoute id={4}>
               <Employee />
             </ProtectedRoute>
           ),
