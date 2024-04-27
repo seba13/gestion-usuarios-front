@@ -79,12 +79,12 @@ export const NavbarDashboard = () => {
           </div>
         </NavLink>
 
-        <NavLink to={"/generar-reportes"} className={({ isActive }) => (isActive ? `${styles.activo} ${styles["nav-item"]}` : `${styles["nav-item"]}`)}>
+        <NavLink to={"/cambiar-contraseña"} className={({ isActive }) => (isActive ? `${styles.activo} ${styles["nav-item"]}` : `${styles["nav-item"]}`)}>
           <div className={`${styles["container-link"]}`}>
             <span className={`${styles.icon}`}>
-              <i className="fa-solid fa-chart-column"></i>
+              <i className="fa-solid fa-key"></i>
             </span>
-            <span className={`${styles.text}`}>Generar Reporte</span>
+            <span className={`${styles.text}`}>Cambiar Contraseña</span>
           </div>
         </NavLink>
 

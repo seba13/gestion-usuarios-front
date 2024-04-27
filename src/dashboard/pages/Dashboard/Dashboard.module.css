@@ -8,7 +8,7 @@
         flex-grow: 1;
     }
 
-    & nav {
+    & .nav {
         order: 2;
     }
 }
@@ -23,7 +23,7 @@
             flex-grow: 0;
         }
 
-        & nav {
+        & .nav {
             order: 0;
         }
     }

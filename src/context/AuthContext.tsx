@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const cookies = new Cookies();
   const [token, setToken] = useState<string | null>(null);
 
-  const { handleFetch } = useFetch({ method: FetchMethods.GET });
+  const { handleFetch } = useFetch();
 
   const handleChangeToken = useMemo(
     () => () => {
@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const validateToken = () => {
-    return handleFetch({ url: "http://localhost/verifyToken" }).then((response) => {
+    return handleFetch({ url: "http://localhost/verifyToken", method: FetchMethods.GET }).then((response) => {
       console.log(response.code);
 
       if (response.code === 200) return true;

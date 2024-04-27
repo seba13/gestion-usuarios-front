@@ -22,6 +22,8 @@
     transform: translateY(10px);
     animation: fade-in .25s ease forwards, fade-out .25s 4s ease forwards;
 
+    z-index: 50000000;
+
     & .close-notification {
         cursor: pointer;
         padding: .5rem;

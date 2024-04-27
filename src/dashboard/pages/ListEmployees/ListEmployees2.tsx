@@ -74,7 +74,7 @@ export const ListEmployees2 = () => {
   const [loading, setLoading] = useState(true);
   const [employees, setEmployees] = useState<Employee[]>();
   const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const { handleFetch } = useFetch({ method: FetchMethods.GET });
+  const { handleFetch } = useFetch();
   const navigate = useNavigate();
   const [filters, setFilters] = useState<Filter>({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -195,7 +195,7 @@ export const ListEmployees2 = () => {
   // };
 
   useEffect(() => {
-    handleFetch({ url: "http://localhost/empleados" }).then((data: Result) => {
+    handleFetch({ url: "http://localhost/empleados", method: FetchMethods.GET }).then((data: Result) => {
       if (data.message) {
         const employeesArr: Employee[] = data.message as Employee[];
         setEmployees(employeesArr);

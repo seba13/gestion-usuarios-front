@@ -47,7 +47,7 @@ export const PersonalInformation = ({ form, handleChange }: { form: FormData; ha
   };
 
   return (
-    <div className="card flex flex-column">
+    <div className="card flex flex-column ">
       <label htmlFor="rut">rut: </label>
       <InputText id="rut" name="rut" value={form.rut.value} onChange={(e) => setValue(e.target.value, e.target.name, e.target.type)} />
 

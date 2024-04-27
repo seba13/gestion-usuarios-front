@@ -6,12 +6,10 @@ export const UseNotification = () => {
 
   const handleAddNotification = ({ propNotification }: { propNotification: TypeNotification }) => {
 
-    console.log("acaaaaaaaaaaaaaaaa");
     setNotifications((prevState) => [...prevState, propNotification]);
   };
 
   const handleDeleteNotification = (id: number) => {
-    console.log("click");
 
     setNotifications((prevNotifications) => {
       return prevNotifications.filter((notification) => notification.id !== id);

@@ -6,13 +6,16 @@ import { useForm } from "../../hooks/useForm";
 import { FormData } from "../../interfaces/formData";
 import styles from "./FormLogin.module.css";
 import notifactionStyles from "../../components/Notification/Notification.module.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { FetchMethods, useFetch } from "../../hooks/useFetch";
 import { useEffect } from "react";
 import { Notification } from "../../components/Notification/Notification";
 import { UseNotification } from "../../hooks/useNotification";
 import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
+import { Dialog } from "primereact/dialog";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
 // import { FormEvent } from "react";
 
 const initialData: FormData = {
@@ -33,7 +36,7 @@ const initialData: FormData = {
 
 export const FormLogin = () => {
   const { handleChangeToken } = useContext(AuthContext)!;
-
+  const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const { form, handleChange, validateAttempts, attempts, errors, handleBlur, handleError } = useForm({
     initialData,
@@ -43,7 +46,26 @@ export const FormLogin = () => {
 
   const { handleAddNotification, notifications, handleDeleteNotification, setTimeoutNotification } = UseNotification();
 
-  const { loading, setLoading, data, handleFetch } = useFetch({ method: FetchMethods.POST });
+  const { loading, setLoading, data, handleFetch } = useFetch();
+
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [invalidRecoveryEmail, setInvalidRecoveryEmail] = useState(false);
+  const handleRecoveryEmail = () => {
+    if (/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(recoveryEmail.trim())) {
+      setVisible(false);
+      handleFetch({
+        url: "http://localhost/recoveryPassword",
+        dataFetch: { correo: recoveryEmail },
+        method: FetchMethods.POST,
+      }).then((response) => {
+        if (response.code === 200) {
+          handleAddNotification({ propNotification: { id: Date.now(), type: "success", message: "Contraseña enviada con éxito" } });
+        } else {
+          handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: "Error al enviar contraseña" } });
+        }
+      });
+    }
+  };
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -72,6 +94,7 @@ export const FormLogin = () => {
             contrasena: form.password.value,
           },
           url: "http://localhost:80/auth-user",
+          method: FetchMethods.POST,
         });
       }
 
@@ -84,7 +107,6 @@ export const FormLogin = () => {
     setLoading(false);
     if (data && !data.error) {
       if (data.data) {
-        console.log("aca");
         const { data: fechData } = data;
 
         if (fechData.code === 200) {
@@ -132,7 +154,7 @@ export const FormLogin = () => {
           <div className={`${styles["form-group"]} ${styles["form-group__df"]}`}>
             <InputForm type="submit" name="submit-btn" disabled={attempts === 0} value="INICIAR SESIÓN" />
           </div>
-          <div className={`${styles["form-group"]} ${styles["form-group__df"]}`}>
+          <div className={`${styles["form-group"]} ${styles["form-group__df"]}`} onClick={() => setVisible(true)}>
             {/* cambiar despues a navlink */}
             <a className={styles.anchor}>¿OLVIDASTE TU CONTRASEÑA?</a>
           </div>
@@ -150,6 +172,21 @@ export const FormLogin = () => {
         })}
       </div>
 
+      <Dialog header="Recuperar Contraseña" visible={visible} style={{ width: "50vw" }} onHide={() => setVisible(false)}>
+        <InputText
+          placeholder="hola@correo.com"
+          onChange={(e) => {
+            setRecoveryEmail(e.target.value);
+
+            console.log(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value));
+
+            setInvalidRecoveryEmail(!/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value));
+          }}
+          keyfilter="email"
+          className="mr-2"
+          invalid={invalidRecoveryEmail}></InputText>
+        <Button label={"Recuperar Contraseña"} onClick={() => handleRecoveryEmail()}></Button>
+      </Dialog>
       {<Outlet />}
     </div>
   );

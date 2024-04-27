@@ -18,10 +18,12 @@ import { FormData } from "../../../interfaces/formData";
 export const Employee = () => {
   const navigate = useNavigate();
   const { rut = "" } = useParams();
-  const { handleFetch } = useFetch({ method: FetchMethods.GET });
+  const { handleFetch } = useFetch();
   const [empleado, setEmpleado] = useState<IEmployee | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  const subPages = [PersonalInformation, ContactInformation];
 
   const initialData: FormData = {
     nombre: {
@@ -78,6 +80,42 @@ export const Employee = () => {
       required: true,
       name: "sexo",
     },
+    telefono: {
+      type: "text",
+      value: empleado?.telefono || "",
+      required: true,
+      name: "telefono",
+    },
+    correo: {
+      type: "text",
+      value: empleado?.correo || "",
+      required: true,
+      name: "correo",
+    },
+    calle: {
+      type: "text",
+      value: empleado?.calle || "",
+      required: true,
+      name: "calle",
+    },
+    numero: {
+      type: "text",
+      value: empleado?.numero || "",
+      required: true,
+      name: "numero",
+    },
+    comuna: {
+      type: "text",
+      value: empleado?.comuna || "",
+      required: true,
+      name: "comuna",
+    },
+    region: {
+      type: "text",
+      value: empleado?.region || "",
+      required: true,
+      name: "region",
+    },
   };
 
   const { form, handleChange } = useForm({ initialData });
@@ -90,7 +128,7 @@ export const Employee = () => {
   ];
 
   useEffect(() => {
-    handleFetch({ url: `http://localhost:80/empleado/rut/${rut}` })
+    handleFetch({ url: `http://localhost:80/empleado/rut/${rut}`, method: FetchMethods.GET })
       .then((data) => {
         console.log(data);
 
@@ -105,16 +143,6 @@ export const Employee = () => {
   }, [rut]);
 
   useEffect(() => {
-    // export interface InputAttr {
-    //     value: string;
-    //     type: string;
-    //     required?: boolean;
-    //     maxLength?: number;
-    //     minLength?: number;
-    //     patter?: RegExp;
-    //     name?: string;
-    //     see?: boolean;
-    //   }
     if (empleado) {
       handleChange({
         name: "nombre",
@@ -167,21 +195,59 @@ export const Employee = () => {
         value: empleado.sexo,
         type: "text",
       });
+
+      handleChange({
+        name: "region",
+        value: empleado.region,
+        type: "text",
+      });
+
+      handleChange({
+        name: "comuna",
+        value: empleado.comuna,
+        type: "text",
+      });
+
+      handleChange({
+        name: "calle",
+        value: empleado.calle,
+        type: "text",
+      });
+
+      handleChange({
+        name: "numero",
+        value: empleado.numero,
+        type: "text",
+      });
+
+      handleChange({
+        name: "telefono",
+        value: empleado.telefono,
+        type: "text",
+      });
+
+      handleChange({
+        name: "correo",
+        value: empleado.correo,
+        type: "text",
+      });
     }
   }, [empleado]);
 
   return (
-    <div className="card flex  flex-column align-items-center">
+    <div className="card flex  flex-column align-items-center animate__animated animate__fadeInLeft" style={{ zIndex: -1 }}>
       {isLoading && <LoadingSpinner />}
 
       <TabMenu model={items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />
 
       {empleado && (
-        <form>
-          {activeIndex === 0 && <PersonalInformation form={form} handleChange={handleChange} />}
-          {activeIndex === 1 && <ContactInformation />}
+        <form className="align-self-start m-4">
+          {subPages[activeIndex]({ form, handleChange })}
 
-          {(activeIndex === 0 || activeIndex === 1) && <Button label="Guardar" />}
+          {/* {activeIndex === 0 && <PersonalInformation form={form} handleChange={handleChange} />} */}
+          {/* {activeIndex === 1 && <ContactInformation form={form} handleChange={handleChange} />} */}
+
+          {(activeIndex === 0 || activeIndex === 1) && <Button label="Guardar" className="mt-4" />}
         </form>
       )}
     </div>
