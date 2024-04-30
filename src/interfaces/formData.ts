@@ -1,5 +1,5 @@
 export interface InputAttr {
-  value: string;
+  value: string ;
   type: string;
   required?: boolean;
   maxLength?: number;

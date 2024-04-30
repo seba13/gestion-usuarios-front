@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { FetchMethods, useFetch } from "../../../hooks/useFetch";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Employee as IEmployee } from "../../../interfaces/Employees";
 import { TabMenu } from "primereact/tabmenu";
 
@@ -14,6 +14,10 @@ import { ContactInformation } from "./ContactInformation/ContactInformation";
 import { Button } from "primereact/button";
 import { useForm } from "../../../hooks/useForm";
 import { FormData } from "../../../interfaces/formData";
+import { UseNotification } from "../../../hooks/useNotification";
+
+import notificationStyles from "../../../components/Notification/Notification.module.css";
+import { Notification } from "../../../components/Notification/Notification";
 
 export const Employee = () => {
   const navigate = useNavigate();
@@ -23,9 +27,18 @@ export const Employee = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const subPages = [PersonalInformation, ContactInformation];
+  const { handleAddNotification, notifications, handleDeleteNotification, setTimeoutNotification } = UseNotification();
+
+  //   const subPages = [PersonalInformation, ContactInformation];
 
   const initialData: FormData = {
+    idEmpleado: {
+      type: "text",
+      value: empleado?.idEmpleado || "",
+      required: true,
+      name: "idEmpleado",
+    },
+
     nombre: {
       type: "text",
       value: empleado?.nombre || "",
@@ -62,6 +75,20 @@ export const Employee = () => {
       required: true,
       name: "estadoCivil",
     },
+
+    cargo: {
+      type: "text",
+      value: empleado?.idCargo || "",
+      required: true,
+      name: "cargo",
+    },
+
+    estado: {
+      type: "text",
+      value: empleado?.estado || "",
+      required: true,
+      name: "estado",
+    },
     fecNac: {
       type: "text",
       value: empleado?.fecNac || "",
@@ -87,7 +114,7 @@ export const Employee = () => {
       name: "telefono",
     },
     correo: {
-      type: "text",
+      type: "email",
       value: empleado?.correo || "",
       required: true,
       name: "correo",
@@ -105,20 +132,26 @@ export const Employee = () => {
       name: "numero",
     },
     comuna: {
-      type: "text",
-      value: empleado?.comuna || "",
+      type: "number",
+      value: empleado?.idComuna || "",
       required: true,
       name: "comuna",
     },
     region: {
-      type: "text",
-      value: empleado?.region || "",
+      type: "number",
+      value: empleado?.idRegion || "",
       required: true,
       name: "region",
     },
+    provincia: {
+      type: "number",
+      value: empleado?.idProvincia || "",
+      required: true,
+      name: "provincia",
+    },
   };
 
-  const { form, handleChange } = useForm({ initialData });
+  const { form, handleChange, errors } = useForm({ initialData });
 
   const items = [
     { label: "Información Personal", icon: "pi pi-home" },
@@ -128,12 +161,15 @@ export const Employee = () => {
   ];
 
   useEffect(() => {
+    
     handleFetch({ url: `http://localhost:80/empleado/rut/${rut}`, method: FetchMethods.GET })
       .then((data) => {
         console.log(data);
 
         if (data.code === 200) {
-          setEmpleado(data.message as IEmployee);
+          const empleado = data.message as IEmployee;
+
+          setEmpleado({ ...empleado });
         }
         setIsLoading(false); // Marcar la carga como completada
       })
@@ -144,6 +180,12 @@ export const Employee = () => {
 
   useEffect(() => {
     if (empleado) {
+      handleChange({
+        name: "idEmpleado",
+        value: empleado.idEmpleado,
+        type: "text",
+      });
+
       handleChange({
         name: "nombre",
         value: empleado.nombre,
@@ -191,6 +233,18 @@ export const Employee = () => {
       });
 
       handleChange({
+        name: "cargo",
+        value: empleado.idCargo,
+        type: "number",
+      });
+
+      handleChange({
+        name: "estado",
+        value: empleado.idEstado,
+        type: "text",
+      });
+
+      handleChange({
         name: "sexo",
         value: empleado.sexo,
         type: "text",
@@ -198,14 +252,20 @@ export const Employee = () => {
 
       handleChange({
         name: "region",
-        value: empleado.region,
-        type: "text",
+        value: empleado.idRegion,
+        type: "number",
+      });
+
+      handleChange({
+        name: "provincia",
+        value: empleado.idProvincia,
+        type: "number",
       });
 
       handleChange({
         name: "comuna",
-        value: empleado.comuna,
-        type: "text",
+        value: empleado.idComuna,
+        type: "number",
       });
 
       handleChange({
@@ -229,27 +289,111 @@ export const Employee = () => {
       handleChange({
         name: "correo",
         value: empleado.correo,
-        type: "text",
+        type: "email",
       });
     }
   }, [empleado]);
 
+  const handleUpdateEmployee = (e: FormEvent) => {
+    e.preventDefault();
+
+    for (const key in errors) {
+      if (errors[key]) {
+        if (errors[key].required) {
+          console.log(key + ": " + errors[key].required);
+
+          handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].required } });
+          return;
+        }
+
+        if (errors[key].validation) {
+          console.log(key + ": " + errors[key].required);
+
+          handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].validation } });
+          return;
+        }
+      }
+    }
+
+    console.log({
+      nombre: form.nombre.value,
+      paterno: form.paterno.value,
+      materno: form.materno.value,
+      fecNac: form.fecNac.value,
+      rut: form.rut.value,
+      dv: form.dv.value,
+      sexo: form.sexo.value,
+      estadoCivil: form.estadoCivil.value,
+      correo: form.correo.value,
+      calle: form.calle.value,
+      numero: form.numero.value,
+      telefono: form.telefono.value,
+      region: form.region.value,
+      comuna: form.comuna.value,
+      cargo: form.cargo.value,
+      profesion: form.profesion.value,
+      estado: form.estado.value,
+      idEmpleado: form.idEmpleado.value,
+    });
+
+    handleFetch({
+      url: "http://localhost:80/empleado",
+      method: FetchMethods.PATCH,
+      dataFetch: {
+        nombre: form.nombre.value,
+        paterno: form.paterno.value,
+        materno: form.materno.value,
+        fecNac: form.fecNac.value,
+        rut: form.rut.value,
+        dv: form.dv.value,
+        sexo: form.sexo.value,
+        estadoCivil: form.estadoCivil.value,
+        correo: form.correo.value,
+        calle: form.calle.value,
+        numero: form.numero.value,
+        telefono: form.telefono.value,
+        region: form.region.value,
+        comuna: form.comuna.value,
+        cargo: form.cargo.value,
+        profesion: form.profesion.value,
+        estado: form.estado.value,
+        idEmpleado: form.idEmpleado.value,
+      },
+    }).then((response) => {
+      if (response.code === 200) {
+        handleAddNotification({ propNotification: { id: Date.now(), type: "success", message: "Empleado actualizado con éxito" } });
+      } else {
+        handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: "Error al actualizar empleado" } });
+      }
+
+      setIsLoading(false);
+    });
+  };
+
   return (
-    <div className="card flex  flex-column align-items-center animate__animated animate__fadeInLeft" style={{ zIndex: -1 }}>
+    <div className="card flex  flex-column align-items-center animate__animated animate__fadeInLeft" style={{ zIndex: -1, flexGrow: 1 }}>
       {isLoading && <LoadingSpinner />}
 
       <TabMenu model={items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />
 
       {empleado && (
         <form className="align-self-start m-4">
-          {subPages[activeIndex]({ form, handleChange })}
+          {/* {subPages[activeIndex]({ form, handleChange })} */}
 
-          {/* {activeIndex === 0 && <PersonalInformation form={form} handleChange={handleChange} />} */}
-          {/* {activeIndex === 1 && <ContactInformation form={form} handleChange={handleChange} />} */}
+          {activeIndex === 0 && <PersonalInformation form={form} handleChange={handleChange} errors={errors} firstPressed={{ first: true, second: true }} />}
+          {activeIndex === 1 && <ContactInformation form={form} handleChange={handleChange} errors={errors} firstPressed={{ first: true, second: true }} />}
 
-          {(activeIndex === 0 || activeIndex === 1) && <Button label="Guardar" className="mt-4" />}
+          {(activeIndex === 0 || activeIndex === 1) && <Button label="Guardar" className="mt-4" onClick={(e) => handleUpdateEmployee(e)} />}
         </form>
       )}
+
+      <div className={notificationStyles["container-notifications"]}>
+        {notifications.map((notification) => {
+          setTimeoutNotification(notification.id, 4250);
+
+          return <Notification key={notification.id} propNotification={notification} onClose={() => handleDeleteNotification(notification.id)} />;
+        })}
+      </div>
     </div>
   );
 

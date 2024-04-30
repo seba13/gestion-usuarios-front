@@ -8,11 +8,14 @@ export interface Employee {
   // ultimo_acceso?: string | null;
 
   calle: string;
-  comuna: string;
+  idComuna: string;
   correo: string;
+  idCargo: string;
   numero: string;
-  region: string;
+  idRegion: string;
+  idProvincia: string;
   estado: string;
+  idEstado: string;
   estadoCivil: string;
   fecDespido: string | null;
   fecIngreso: string;

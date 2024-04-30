@@ -5,7 +5,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "../../hooks/useForm";
 import { FormData } from "../../interfaces/formData";
 import styles from "./FormLogin.module.css";
-import notifactionStyles from "../../components/Notification/Notification.module.css";
+import notificationStyles from "../../components/Notification/Notification.module.css";
 import { useContext, useState } from "react";
 
 import { FetchMethods, useFetch } from "../../hooks/useFetch";
@@ -164,7 +164,7 @@ export const FormLogin = () => {
         <img src="/assets/images/bg.png" alt="imagen login" />
       </div>
 
-      <div className={notifactionStyles["container-notifications"]}>
+      <div className={notificationStyles["container-notifications"]}>
         {notifications.map((notification) => {
           setTimeoutNotification(notification.id, 4250);
 
@@ -177,8 +177,6 @@ export const FormLogin = () => {
           placeholder="hola@correo.com"
           onChange={(e) => {
             setRecoveryEmail(e.target.value);
-
-            console.log(/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value));
 
             setInvalidRecoveryEmail(!/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(e.target.value));
           }}

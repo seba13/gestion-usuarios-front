@@ -6,6 +6,7 @@ export const enum FetchMethods {
   "POST" = "POST",
   "PUT" = "PUT",
   "DELETE" = "DELETE",
+  "PATCH" = "PATCH",
 }
 
 export const useFetch = () => {
@@ -24,12 +25,13 @@ export const useFetch = () => {
         body: dataFetch ? JSON.stringify(dataFetch) : null,
       })
         .then((response) => {
+          console.log(response.status);
+
           if (!response.ok) {
-            console.log("aca");
             const enum MessageError {
               "UNAUTHORIZED" = "usuario o contraseña incorrecta",
               "FORBIDDEN" = "usuario no tiene permisos para acceder a este recurso",
-              "INTERNAL_SERVER_ERROR" = "Ocurrió un error en el",
+              "INTERNAL_SERVER_ERROR" = "Ocurrió un error en el servidor",
             }
 
             const errorMessage = response.status === 401 ? MessageError.UNAUTHORIZED : MessageError.FORBIDDEN || MessageError.INTERNAL_SERVER_ERROR;

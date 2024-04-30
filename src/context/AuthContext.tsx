@@ -21,12 +21,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 
   const validateToken = () => {
-    return handleFetch({ url: "http://localhost/verifyToken", method: FetchMethods.GET }).then((response) => {
-      console.log(response.code);
+    console.log("entra ac");
+    return handleFetch({ url: "http://localhost/verifyToken", method: FetchMethods.GET })
+      .then((response) => {
+        console.log("entra acá");
 
-      if (response.code === 200) return true;
-      return false;
-    });
+        console.log(response.code);
+
+        if (response.code === 200) return true;
+        return false;
+      })
+      .catch(() => {
+        return false;
+      });
   };
 
   const logout = () => {

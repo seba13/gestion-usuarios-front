@@ -10,6 +10,10 @@ export const useForm = ({ initialData, maxAttempts = -1 }: { initialData: FormDa
     handleError(input);
   };
 
+  const setInitialErrors = (initialErrors: InputError) => {
+    setErrors(initialErrors);
+  };
+
   const handleError = (input: InputAttr) => {
     const inputErrors = validateForm(input);
 
@@ -17,8 +21,6 @@ export const useForm = ({ initialData, maxAttempts = -1 }: { initialData: FormDa
       return { ...prevErrors, ...inputErrors };
     });
   };
-
- 
 
   const validateAttempts = (): boolean => {
     if (typeof maxAttempts === "number") {
@@ -60,5 +62,6 @@ export const useForm = ({ initialData, maxAttempts = -1 }: { initialData: FormDa
     attempts,
     handleBlur,
     handleError,
+    setInitialErrors,
   };
 };
