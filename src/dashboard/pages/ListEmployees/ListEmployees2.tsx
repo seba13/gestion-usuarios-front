@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import { utils, writeFile } from "xlsx";
+
+import { arrProvincias } from "../../../utils/getLocationData";
 
 import { FormEvent, useEffect, useState } from "react";
 import { Employee } from "../../../interfaces/Employees";
@@ -118,49 +119,20 @@ export const ListEmployees2 = () => {
     setGlobalFilterValue(value);
   };
 
-  const headersPDF = [["Rut", "Nombre", "Apellido Paterno", "Apellido Materno", "Sexo", "Estado", "Fecha Ingreso", "Fecha Despido"]];
+  const exportExcel = () => {
+    if (employees && employees.length > 0) {
+      const ws = utils.json_to_sheet(employees);
 
-  const getCols = employees?.map((employee) => {
-    const fechaIngreso = new Date(employee.fecIngreso);
+      const wb = utils.book_new();
+      utils.book_append_sheet(wb, ws, "Data");
 
-    const anioIngreso = fechaIngreso.getFullYear();
+      const fechaActual = new Date();
+      const formatFecha = `${fechaActual.getFullYear()}-${fechaActual.getDate() + 1}-${fechaActual.getMonth() + 1}_${fechaActual.getHours()}:${fechaActual.getMinutes()}:${fechaActual.getSeconds()}`;
 
-    const mesIngreso = fechaIngreso.getMonth() + 1;
-    const diaIngreso = fechaIngreso.getDate();
+      console.log(formatFecha);
 
-    const fechaIngresoFormat = `${anioIngreso}-${mesIngreso < 10 ? "0" + mesIngreso : mesIngreso}-${diaIngreso < 10 ? "0" + diaIngreso : diaIngreso}`;
-
-    let fechaDespidoFormat = "";
-
-    if (employee.fecDespido) {
-      const fechaDespido = new Date(employee.fecIngreso);
-
-      const anioDespido = fechaDespido.getFullYear();
-
-      const mesDepido = fechaDespido.getMonth() + 1;
-      const diaDespido = fechaDespido.getDate();
-
-      fechaDespidoFormat = `${anioDespido}-${mesDepido < 10 ? "0" + mesDepido : mesDepido}-${diaDespido < 10 ? "0" + diaDespido : diaDespido}`;
+      writeFile(wb, "empleados-" + formatFecha + ".xlsx");
     }
-
-    return [employee.rut, employee.nombre, employee.paterno, employee.materno, employee.sexo, employee.estado, fechaIngresoFormat, fechaDespidoFormat];
-  });
-
-  const exportPdf = () => {
-    const doc = new jsPDF("portrait", "pt", "A4");
-    doc.setFontSize(20);
-    doc.text("Reporte trabajadores", 40, 40);
-    autoTable(doc, { head: headersPDF, body: getCols, startY: 50 });
-
-    // doc.save("empleados.pdf");
-
-    const blob = new Blob([doc.output()], { type: "application/pdf" });
-
-    // Crear una URL para el blob
-    const url = URL.createObjectURL(blob);
-
-    // Mostrar la URL en el navegador
-    window.open(url, "_blank");
   };
 
   const renderHeader = () => {
@@ -168,9 +140,11 @@ export const ListEmployees2 = () => {
       <div className="flex justify-content-center gap-2">
         <span className="p-input-icon-left">
           <i className="pi pi-search" />
-          <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search" />
+          <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Búsqueda general" />
         </span>
-        <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} tooltip="PDF" tooltipOptions={{ position: "bottom", mouseTrack: true, mouseTrackTop: 15 }} />
+        {/* <Button type="button" icon="pi pi-file-pdf" severity="warning" rounded onClick={exportPdf} tooltip="PDF" tooltipOptions={{ position: "bottom", mouseTrack: true, mouseTrackTop: 15 }} /> */}
+
+        <Button type="button" icon="pi pi-file-excel" severity="success" rounded onClick={exportExcel} data-pr-tooltip="Excel" tooltip="Excel" tooltipOptions={{ position: "bottom", mouseTrack: true, mouseTrackTop: 15 }} />
       </div>
     );
   };
@@ -180,7 +154,9 @@ export const ListEmployees2 = () => {
   };
 
   const statusRowFilterTemplate = (options: FilterOptions) => {
-    return <Dropdown value={options.value} options={estados} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear style={{ minWidth: "12rem" }} />;
+    return (
+      <Dropdown value={options.value} options={estados} onChange={(e) => options.filterApplyCallback(e.value)} itemTemplate={statusItemTemplate} placeholder="Seleccione estado" className="p-column-filter" showClear style={{ minWidth: "12rem" }} />
+    );
   };
 
   const statusBodyTemplate = (rowData: Employee) => {
@@ -196,15 +172,39 @@ export const ListEmployees2 = () => {
   // };
 
   useEffect(() => {
-    handleFetch({ url: "http://localhost:80/empleados", method: FetchMethods.GET }).then((data: Result) => {
+    handleFetch({ url: `${import.meta.env.VITE_URL_API}empleados`, method: FetchMethods.GET }).then((data: Result) => {
       if (data.message) {
-        const employeesArr: Employee[] = data.message as Employee[];
+        const employeesArr: Employee[] = (data.message as Employee[]).map((employee) => {
+          return {
+            idEmpleado: employee.idEmpleado,
+            rut: employee.rut,
+            dv: employee.dv,
+            nombre: employee.nombre,
+            paterno: employee.paterno,
+            materno: employee.materno,
+            fecNac: employee.fecNac,
+            profesion: employee.profesion,
+            idCargo: employee.idCargo,
+            cargo: employee.cargo,
+            estadoCivil: employee.estadoCivil,
+            telefono: employee.telefono,
+            correo: employee.correo,
+            sexo: employee.sexo === "m" ? "Masculino" : "Femenino",
+            idRegion: employee.idRegion,
+            region: employee.region,
+            idProvincia: employee.idProvincia,
+            provincia: arrProvincias.filter((provincia) => provincia.idProvincia === parseInt(employee.idProvincia))[0].nombreProvincia,
+            idComuna: employee.idComuna,
+            comuna: employee.comuna,
+            calle: employee.calle,
+            numero: employee.numero,
+            fecIngreso: employee.fecIngreso,
+            fecDespido: employee.fecDespido,
+            idEstado: employee.idEstado,
+            estado: employee.estado,
+          } as Employee;
+        });
         setEmployees(employeesArr);
-
-        console.log(data.message);
-
-        // console.log(employees);
-        console.log(employees && employees[0].nombre);
 
         setLoading(false);
       }

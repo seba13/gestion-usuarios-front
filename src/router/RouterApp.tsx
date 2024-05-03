@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { Dashboard } from "../dashboard/pages/Dashboard/Dashboard";
 // import { ListEmployees } from "../dashboard/pages/ListEmployees/ListEmployees";
 import { FormEmployee } from "../dashboard/pages/FormEmployee/FormEmployee";
-import { ChangePassword } from "../dashboard/pages/Reports/ChangePassword";
+import { ChangePassword } from "../dashboard/pages/ChangePassword/ChangePassword";
 import { ProtectedRoute } from "../dashboard/components/ProtectedRoute/ProtectedRoute";
 import { ListEmployees2 } from "../dashboard/pages/ListEmployees/ListEmployees2";
 import { Employee } from "../dashboard/pages/Employee/Employee";
@@ -16,6 +16,8 @@ import { Employee } from "../dashboard/pages/Employee/Employee";
 
 export const AppRouter = () => {
   const { token } = useContext(AuthContext)!;
+
+  
 
   const router = createBrowserRouter([
     {

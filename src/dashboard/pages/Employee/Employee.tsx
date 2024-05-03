@@ -4,6 +4,8 @@ import { FormEvent, useEffect, useState } from "react";
 import { Employee as IEmployee } from "../../../interfaces/Employees";
 import { TabMenu } from "primereact/tabmenu";
 
+import { arrProvincias } from "../../../utils/getLocationData";
+
 import "primeflex/primeflex.css";
 import "primereact/resources/primereact.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -18,6 +20,8 @@ import { UseNotification } from "../../../hooks/useNotification";
 
 import notificationStyles from "../../../components/Notification/Notification.module.css";
 import { Notification } from "../../../components/Notification/Notification";
+import { EmployeeLetterGenerator } from "./EmployeeLetterGenerator/EmployeeLetterGenerator";
+import { ListEmployeeLetter } from "./ListEmployeeLetter/ListEmployeeLetter";
 
 export const Employee = () => {
   const navigate = useNavigate();
@@ -161,15 +165,42 @@ export const Employee = () => {
   ];
 
   useEffect(() => {
-    
-    handleFetch({ url: `http://localhost:80/empleado/rut/${rut}`, method: FetchMethods.GET })
+    handleFetch({ url: `${import.meta.env.VITE_URL_API}empleado/rut/${rut}`, method: FetchMethods.GET })
       .then((data) => {
+        console.log("aca");
         console.log(data);
 
         if (data.code === 200) {
           const empleado = data.message as IEmployee;
 
-          setEmpleado({ ...empleado });
+          setEmpleado({
+            idEmpleado: empleado.idEmpleado,
+            rut: empleado.rut,
+            dv: empleado.dv,
+            nombre: empleado.nombre,
+            paterno: empleado.paterno,
+            materno: empleado.materno,
+            fecNac: empleado.fecNac,
+            profesion: empleado.profesion,
+            idCargo: empleado.idCargo,
+            cargo: empleado.cargo,
+            estadoCivil: empleado.estadoCivil,
+            telefono: empleado.telefono,
+            correo: empleado.correo,
+            sexo: empleado.sexo === "m" ? "Masculino" : "Femenino",
+            idRegion: empleado.idRegion,
+            region: empleado.region,
+            idProvincia: empleado.idProvincia,
+            provincia: arrProvincias.filter((provincia) => provincia.idProvincia === parseInt(empleado.idProvincia))[0].nombreProvincia,
+            idComuna: empleado.idComuna,
+            comuna: empleado.comuna,
+            calle: empleado.calle,
+            numero: empleado.numero,
+            fecIngreso: empleado.fecIngreso,
+            fecDespido: empleado.fecDespido,
+            idEstado: empleado.idEstado,
+            estado: empleado.estado,
+          } as IEmployee);
         }
         setIsLoading(false); // Marcar la carga como completada
       })
@@ -297,20 +328,22 @@ export const Employee = () => {
   const handleUpdateEmployee = (e: FormEvent) => {
     e.preventDefault();
 
-    for (const key in errors) {
-      if (errors[key]) {
-        if (errors[key].required) {
-          console.log(key + ": " + errors[key].required);
+    if (errors) {
+      for (const key in errors) {
+        if (errors[key]) {
+          if (errors[key]?.required) {
+            console.log(key + ": " + errors[key]?.required);
 
-          handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].required } });
-          return;
-        }
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key]?.required } });
+            return;
+          }
 
-        if (errors[key].validation) {
-          console.log(key + ": " + errors[key].required);
+          if (errors[key]?.validation) {
+            console.log(key + ": " + errors[key]?.required);
 
-          handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].validation } });
-          return;
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key]?.validation } });
+            return;
+          }
         }
       }
     }
@@ -337,7 +370,7 @@ export const Employee = () => {
     });
 
     handleFetch({
-      url: "http://localhost:80/empleado",
+      url: `${import.meta.env.VITE_URL_API}empleado`,
       method: FetchMethods.PATCH,
       dataFetch: {
         nombre: form.nombre.value,
@@ -371,7 +404,7 @@ export const Employee = () => {
   };
 
   return (
-    <div className="card flex  flex-column align-items-center animate__animated animate__fadeInLeft" style={{ zIndex: -1, flexGrow: 1 }}>
+    <div style={{ zIndex: -1, flexGrow: 1 }}>
       {isLoading && <LoadingSpinner />}
 
       <TabMenu model={items} activeIndex={activeIndex} onTabChange={(e) => setActiveIndex(e.index)} />
@@ -386,6 +419,9 @@ export const Employee = () => {
           {(activeIndex === 0 || activeIndex === 1) && <Button label="Guardar" className="mt-4" onClick={(e) => handleUpdateEmployee(e)} />}
         </form>
       )}
+
+      {empleado && activeIndex === 2 && <EmployeeLetterGenerator empleado={empleado} />}
+      {empleado && activeIndex === 3 && <ListEmployeeLetter rut={empleado.rut} />}
 
       <div className={notificationStyles["container-notifications"]}>
         {notifications.map((notification) => {

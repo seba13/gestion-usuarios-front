@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Outlet } from "react-router-dom";
+// import { Outlet } from "react-router-dom";
 import { InputForm } from "../../components/InputForm/InputForm";
 import { AuthContext } from "../../context/AuthContext";
 import { useForm } from "../../hooks/useForm";
@@ -16,6 +16,8 @@ import { LoadingSpinner } from "../../components/LoadingSpinner/LoadingSpinner";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
+import { InputOtp } from "primereact/inputotp";
+
 // import { FormEvent } from "react";
 
 const initialData: FormData = {
@@ -35,7 +37,7 @@ const initialData: FormData = {
 };
 
 export const FormLogin = () => {
-  const { handleChangeToken } = useContext(AuthContext)!;
+  const { handleChangeToken, logout } = useContext(AuthContext)!;
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const { form, handleChange, validateAttempts, attempts, errors, handleBlur, handleError } = useForm({
@@ -50,11 +52,15 @@ export const FormLogin = () => {
 
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [invalidRecoveryEmail, setInvalidRecoveryEmail] = useState(false);
+  const [capCode, setCapCode] = useState("");
+  const [showCapCode, setShowCapCode] = useState(false);
+  const [invalidCapCode, setInvalidCapcode] = useState(false);
+
   const handleRecoveryEmail = () => {
     if (/^[\w.-]+@([\w-]+\.)+[\w-]{2,4}$/.test(recoveryEmail.trim())) {
       setVisible(false);
       handleFetch({
-        url: "http://localhost/recoveryPassword",
+        url: `${import.meta.env.VITE_URL_API}recoveryPassword`,
         dataFetch: { correo: recoveryEmail },
         method: FetchMethods.POST,
       }).then((response) => {
@@ -93,7 +99,7 @@ export const FormLogin = () => {
             usuario: form.username.value,
             contrasena: form.password.value,
           },
-          url: "http://localhost:80/auth-user",
+          url: `${import.meta.env.VITE_URL_API}auth-user`,
           method: FetchMethods.POST,
         });
       }
@@ -103,6 +109,39 @@ export const FormLogin = () => {
     }
   };
 
+  const handleSubmitCapCode = () => {
+    if (capCode.length === 4) {
+      if (invalidCapCode) {
+        setInvalidCapcode(false);
+      }
+
+      handleFetch({ url: `${import.meta.env.VITE_URL_API}verifyCode`, method: FetchMethods.POST, dataFetch: { codigo: capCode } })
+        .then((response) => {
+          if (response.code === 200) {
+            setShowCapCode(false);
+            handleChangeToken();
+            navigate("/");
+          }
+        })
+        .catch(() => {
+          logout();
+          setShowCapCode(false);
+        });
+
+      // fetch
+    } else {
+      setInvalidCapcode(true);
+    }
+  };
+
+  useEffect(() => {
+    if (capCode.length === 4) {
+      if (invalidCapCode) {
+        setInvalidCapcode(false);
+      }
+    }
+  }, [capCode]);
+
   useEffect(() => {
     setLoading(false);
     if (data && !data.error) {
@@ -110,15 +149,16 @@ export const FormLogin = () => {
         const { data: fechData } = data;
 
         if (fechData.code === 200) {
-          handleChangeToken();
-          navigate("/");
+          // handleChangeToken();
+          // navigate("/");
+          setCapCode("");
+          setShowCapCode(true);
         }
       }
       return;
     }
 
     if (data.error) {
-      console.log("aca222");
       handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: data.error } });
       return;
     }
@@ -185,7 +225,21 @@ export const FormLogin = () => {
           invalid={invalidRecoveryEmail}></InputText>
         <Button label={"Recuperar Contraseña"} onClick={() => handleRecoveryEmail()}></Button>
       </Dialog>
-      {<Outlet />}
+
+      <Dialog header="Ingrese Código" visible={showCapCode} style={{ width: "50vw" }} onHide={() => setShowCapCode(false)}>
+        <InputOtp
+          length={4}
+          value={capCode}
+          invalid={invalidCapCode}
+          integerOnly
+          onChange={(e) => {
+            if (e.value) {
+              setCapCode(e.value.toString());
+            }
+          }}></InputOtp>
+
+        <Button label="Enviar código" className="mt-2" onClick={() => handleSubmitCapCode()}></Button>
+      </Dialog>
     </div>
   );
 };

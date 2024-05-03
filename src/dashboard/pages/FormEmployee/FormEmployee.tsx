@@ -317,17 +317,17 @@ export const FormEmployee = () => {
         }
 
         if (errors[key]) {
-          if (errors[key].required) {
-            console.log(key + ": " + errors[key].required);
+          if (errors[key]?.required) {
+            console.log(key + ": " + errors[key]?.required);
 
-            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].required } });
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key]?.required } });
             return;
           }
 
-          if (errors[key].validation) {
-            console.log(key + ": " + errors[key].required);
+          if (errors[key]?.validation) {
+            console.log(key + ": " + errors[key]?.required);
 
-            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].validation } });
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key]?.validation } });
             return;
           }
         }
@@ -340,17 +340,17 @@ export const FormEmployee = () => {
             return true;
           }
 
-          if (errors[key].required) {
-            console.log(key + ": " + errors[key].required);
+          if (errors[key]?.required) {
+            console.log(key + ": " + errors[key]?.required);
 
-            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].required } });
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key]?.required } });
             return;
           }
 
-          if (errors[key].validation) {
-            console.log(key + ": " + errors[key].required);
+          if (errors[key]?.validation) {
+            console.log(key + ": " + errors[key]?.required);
 
-            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key].validation } });
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: key + ": " + errors[key]?.validation } });
             return;
           }
         }
@@ -384,7 +384,7 @@ export const FormEmployee = () => {
       console.log(form);
 
       handleFetch({
-        url: "http://localhost:80/empleado",
+        url: `${import.meta.env.VITE_URL_API}empleado`,
         method: FetchMethods.POST,
         dataFetch: {
           nombre: form.nombre.value,

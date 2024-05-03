@@ -61,7 +61,7 @@ export const arrRegiones = [
   },
 ];
 
-const arrProvincias = [
+export const arrProvincias = [
   {
     idProvincia: 1,
     nombreProvincia: "Arica",
@@ -334,7 +334,7 @@ const arrProvincias = [
   },
 ];
 
-const arrComunas = [
+export const arrComunas = [
   {
     idComuna: 1,
     nombreComuna: "Arica",

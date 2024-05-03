@@ -29,12 +29,18 @@ export const useFetch = () => {
 
           if (!response.ok) {
             const enum MessageError {
+              "BAD_REQUEST" = "ocurrio un problema al procesar solicitud",
+              "NOT_FOUND" = "no se encontró el recurso",
               "UNAUTHORIZED" = "usuario o contraseña incorrecta",
               "FORBIDDEN" = "usuario no tiene permisos para acceder a este recurso",
               "INTERNAL_SERVER_ERROR" = "Ocurrió un error en el servidor",
             }
 
-            const errorMessage = response.status === 401 ? MessageError.UNAUTHORIZED : MessageError.FORBIDDEN || MessageError.INTERNAL_SERVER_ERROR;
+            let errorMessage = response.status === 400 ? MessageError.BAD_REQUEST : "";
+            errorMessage = response.status === 401 ? MessageError.UNAUTHORIZED : errorMessage;
+            errorMessage = response.status === 403 ? MessageError.FORBIDDEN : errorMessage;
+            errorMessage = response.status === 404 ? MessageError.NOT_FOUND : errorMessage;
+            errorMessage = errorMessage === "" ? MessageError.INTERNAL_SERVER_ERROR : errorMessage;
 
             setData({
               loading: false,

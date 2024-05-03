@@ -93,7 +93,46 @@ export const PersonalInformation = ({
       required,
     });
 
-    // setDV(value);
+    setDV(value);
+  };
+
+  const setDV = (value: string) => {
+    const digitos = value;
+
+    console.log(digitos);
+
+    const digitosReverse = digitos.split("").reverse();
+
+    console.log(digitosReverse);
+    let sumDigitos = 0;
+    let factor = 2;
+
+    for (let i = 0; i < digitosReverse.length; i++) {
+      if (factor > 7) factor = 2;
+
+      sumDigitos += parseInt(digitosReverse[i]) * factor;
+      factor++;
+    }
+
+    const cociente = Math.floor(sumDigitos / 11);
+
+    const diferencia = Math.abs(sumDigitos - cociente * 11);
+
+    console.log(diferencia);
+
+    let digitoVerificador: number | string = 11 - diferencia;
+
+    if (digitoVerificador === 11) digitoVerificador = 0;
+    if (digitoVerificador === 10) digitoVerificador = "k";
+
+
+    handleChange({
+        name: "dv",
+        value: digitoVerificador.toString(),
+        type: 'text',
+        required: true,
+      });
+    
   };
 
   return (
@@ -111,7 +150,7 @@ export const PersonalInformation = ({
         />
 
         <label htmlFor="dv">dv: </label>
-        <InputText id="dv" name="dv" value={form.dv.value} onChange={(e) => setValue(e.target.value, e.target.name, e.target.type, e.target.required)} required={true} invalid={firstPressed.first && errors && errors.dv ? true : false || false} />
+        <InputText id="dv" name="dv" value={form.dv.value} required={true} invalid={firstPressed.first && errors && errors.dv ? true : false || false} />
       </div>
 
       <label htmlFor="nombre">Nombre: </label>

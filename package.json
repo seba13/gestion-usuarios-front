@@ -10,19 +10,22 @@
     "preview": "vite preview --host"
   },
   "dependencies": {
-    "jsonwebtoken": "^9.0.2",
+    "html-to-text": "^9.0.5",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "jwt-decode": "^4.0.0",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
-    "primereact": "^10.6.2",
+    "primereact": "^10.6.4",
+    "quill": "^2.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
-    "universal-cookie": "^7.1.4"
+    "universal-cookie": "^7.1.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@types/html-to-text": "^9.0.4",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
