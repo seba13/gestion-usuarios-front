@@ -110,8 +110,8 @@ export const FormLogin = () => {
   };
 
   useEffect(() => {
-    console.log({ capCode });
-  }, [capCode]);
+    console.log({ showCapCode });
+  }, [showCapCode]);
 
   const handleSubmitCapCode = () => {
     if (capCode.length === 4) {
