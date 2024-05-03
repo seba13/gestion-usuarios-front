@@ -117,7 +117,9 @@ export const FormLogin = () => {
 
       handleFetch({ url: `${import.meta.env.VITE_URL_API}verifyCode`, method: FetchMethods.POST, dataFetch: { codigo: capCode } })
         .then((response) => {
+          console.log("entra acá veriryCode");
           if (response.code === 200) {
+            console.log("entra en este if 2");
             setShowCapCode(false);
             handleChangeToken();
             navigate("/");
