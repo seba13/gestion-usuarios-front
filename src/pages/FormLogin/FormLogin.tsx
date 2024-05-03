@@ -137,6 +137,8 @@ export const FormLogin = () => {
     } else {
       setInvalidCapcode(true);
     }
+
+    setShowCapCode(false);
   };
 
   useEffect(() => {
@@ -156,7 +158,6 @@ export const FormLogin = () => {
         if (fechData.code === 200) {
           // handleChangeToken();
           // navigate("/");
-          setCapCode("");
           setShowCapCode(true);
         }
       }
