@@ -29,7 +29,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleChangeToken = useMemo(
     () => () => {
+      console.log("entra en handleChangeToken");
+
       if (cookies.get("cookie-token")) {
+        console.log("se setea token de cookie");
         setToken(cookies.get("cookie-token"));
       }
     },
@@ -52,6 +55,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
+    console.log("entra en el logout");
+
     cookies.remove("cookie-token");
     setToken(null);
 

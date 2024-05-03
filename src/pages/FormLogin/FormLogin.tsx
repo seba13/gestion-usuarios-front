@@ -37,7 +37,7 @@ const initialData: FormData = {
 };
 
 export const FormLogin = () => {
-  const { handleChangeToken, logout } = useContext(AuthContext)!;
+  const { handleChangeToken } = useContext(AuthContext)!;
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate();
   const { form, handleChange, validateAttempts, attempts, errors, handleBlur, handleError } = useForm({
@@ -109,6 +109,10 @@ export const FormLogin = () => {
     }
   };
 
+  useEffect(() => {
+    console.log({ capCode });
+  }, [capCode]);
+
   const handleSubmitCapCode = () => {
     if (capCode.length === 4) {
       if (invalidCapCode) {
@@ -120,13 +124,12 @@ export const FormLogin = () => {
           console.log("entra acá veriryCode");
           if (response.code === 200) {
             console.log("entra en este if 2");
-            setShowCapCode(false);
-            handleChangeToken();
             navigate("/");
+            handleChangeToken();
+            setShowCapCode(false);
           }
         })
         .catch(() => {
-          logout();
           setShowCapCode(false);
         });
 
