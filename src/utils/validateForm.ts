@@ -12,6 +12,8 @@ const validateInput = {
   text: (input: InputAttr): PropError | null => {
     let inputErrors: PropError | null = null;
 
+    console.log({ InputValue: input.value });
+
     if (input.required && input.value.trim().length === 0) {
       inputErrors = inputErrors ? inputErrors : {};
 

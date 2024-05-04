@@ -70,7 +70,6 @@ export const ContactInformation = ({
     });
   };
 
-
   useEffect(() => {
     const idRegion = parseInt(form.region.value);
 
@@ -108,7 +107,7 @@ export const ContactInformation = ({
   //   }, []);
 
   return (
-    <div className="card flex flex-column ">
+    <div className="card flex flex-column " style={{ width: "100%", maxWidth: "800px" }}>
       <label htmlFor="correo">Correo: </label>
       <InputText
         id="correo"
@@ -158,6 +157,7 @@ export const ContactInformation = ({
         onChange={(e) => handlerSelect(e.target.value, e.target.name, "number", true)}
         options={optionRegiones}
         optionLabel="region"
+        optionValue="value"
         placeholder="Seleccione región"
         className="w-full md:w-14rem"
         invalid={firstPressed.second && errors && errors.region ? true : false || false}
@@ -171,6 +171,7 @@ export const ContactInformation = ({
         onChange={(e) => handlerSelect(e.target.value, e.target.name, "number", true)}
         options={optionPronvicias}
         optionLabel="provincia"
+        optionValue="value"
         placeholder="Seleccione provincia"
         className="w-full md:w-14rem"
         disabled={!optionPronvicias || optionPronvicias.length === 0}
@@ -185,6 +186,7 @@ export const ContactInformation = ({
         onChange={(e) => handlerSelect(e.target.value, e.target.name, "number", true)}
         options={optionComunas}
         optionLabel="comuna"
+        optionValue="value"
         placeholder="Seleccione comuna"
         className="w-full md:w-14rem"
         disabled={!optionComunas || optionComunas.length === 0}

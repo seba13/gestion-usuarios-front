@@ -5,6 +5,7 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { Nullable } from "primereact/ts-helpers";
 import { InputError } from "../../../../utils/validateForm";
+import { useEffect } from "react";
 
 export const PersonalInformation = ({
   form,
@@ -71,8 +72,6 @@ export const PersonalInformation = ({
   };
 
   const handlerSelect = (value: string, name: string, type: string, required: boolean) => {
-    console.log(value);
-
     handleChange({
       name,
       value: value,
@@ -125,18 +124,20 @@ export const PersonalInformation = ({
     if (digitoVerificador === 11) digitoVerificador = 0;
     if (digitoVerificador === 10) digitoVerificador = "k";
 
-
     handleChange({
-        name: "dv",
-        value: digitoVerificador.toString(),
-        type: 'text',
-        required: true,
-      });
-    
+      name: "dv",
+      value: digitoVerificador.toString(),
+      type: "text",
+      required: true,
+    });
   };
 
+  useEffect(() => {
+    console.log(form);
+  }, [form]);
+
   return (
-    <div className="card flex flex-column ">
+    <div className="card flex flex-column col-6" style={{ width: "100%", maxWidth: "800px" }}>
       <div className="form-group">
         <label htmlFor="rut">rut: </label>
         <InputText
@@ -208,9 +209,10 @@ export const PersonalInformation = ({
         value={form.estadoCivil.value}
         name="estadoCivil"
         id="estadoCivil"
-        onChange={(e) => handlerSelect(e.target.value, e.target.name, "text", true)}
+        onChange={(e) => handlerSelect(e.value, e.target.name, "text", true)}
         options={optionEstadoCivil}
         optionLabel="name"
+        optionValue="value"
         placeholder="Seleccione estado civil"
         className="w-full md:w-14rem"
         required={true}
@@ -225,6 +227,7 @@ export const PersonalInformation = ({
         onChange={(e) => handlerSelect(e.target.value, e.target.name, "number", true)}
         options={optionCargo}
         optionLabel="name"
+        optionValue="value"
         placeholder="Seleccione cargo"
         className="w-full md:w-14rem"
         required={true}
@@ -239,6 +242,7 @@ export const PersonalInformation = ({
         onChange={(e) => handlerSelect(e.target.value, e.target.name, "text", true)}
         options={optionEstados}
         optionLabel="name"
+        optionValue="value"
         placeholder="Seleccione estado"
         className="w-full md:w-14rem"
         required={true}
@@ -253,6 +257,7 @@ export const PersonalInformation = ({
         onChange={(e) => handlerSelect(e.target.value, e.target.name, "text", true)}
         options={optionSexo}
         optionLabel="name"
+        optionValue="value"
         placeholder="Seleccione sexo"
         className="w-full md:w-14rem"
         required={true}

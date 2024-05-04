@@ -277,7 +277,7 @@ export const Employee = () => {
 
       handleChange({
         name: "sexo",
-        value: empleado.sexo,
+        value: empleado.sexo === "Masculino" ? "m" : "f",
         type: "text",
       });
 
