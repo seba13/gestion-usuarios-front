@@ -18,6 +18,11 @@ const initialData: FormData = {
     required: true,
     name: "tipoCarta",
   },
+  fecEntrega: {
+    type: "text",
+    value: "",
+    required: true,
+  },
 };
 
 export const EmployeeLetterGenerator = ({ empleado }: { empleado: Employee }) => {
@@ -85,7 +90,7 @@ export const EmployeeLetterGenerator = ({ empleado }: { empleado: Employee }) =>
       console.log("aca");
       console.log({ idEmisor, idEmpleado: empleado.idEmpleado, motivo: text, idTipoCarta: form.tipoCarta.value });
 
-      handleFetch({ url: `${import.meta.env.VITE_URL_API}carta`, method: FetchMethods.POST, dataFetch: { idEmisor, idEmpleado: empleado.idEmpleado, motivo: text, idTipoCarta: form.tipoCarta.value } })
+      handleFetch({ url: `${import.meta.env.VITE_URL_API}carta`, method: FetchMethods.POST, dataFetch: { idEmisor, idEmpleado: empleado.idEmpleado, motivo: text, idTipoCarta: form.tipoCarta.value, fecEntrega: new Date().toISOString() } })
         .then((response) => {
           if (response.code === 200) {
             handleAddNotification({ propNotification: { id: Date.now(), type: "success", message: "Carta guardada con éxito" } });
