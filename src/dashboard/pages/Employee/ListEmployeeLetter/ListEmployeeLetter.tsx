@@ -196,7 +196,7 @@ export const ListEmployeeLetter = ({ rut }: { rut: string }) => {
       jspdf.text(text, margin.left, margin.top, { align: "left", maxWidth: 500 });
 
       // Save the PDF with a filename
-      jspdf.save(tipoCarta + "-" + new Date() + "demo.pdf");
+      jspdf.save(tipoCarta + "-" + new Date() + ".pdf");
     }
   };
 
