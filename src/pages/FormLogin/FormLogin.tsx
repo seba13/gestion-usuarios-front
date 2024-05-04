@@ -101,7 +101,17 @@ export const FormLogin = () => {
           },
           url: `${import.meta.env.VITE_URL_API}auth-user`,
           method: FetchMethods.POST,
-        });
+        })
+          .then((response) => {
+            setLoading(false);
+            if (response.code === 200) {
+              setShowCapCode(true);
+            }
+          })
+          .catch((error) => {
+            handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: error } });
+            return;
+          });
       }
 
       // fetch
@@ -148,26 +158,25 @@ export const FormLogin = () => {
     }
   }, [capCode]);
 
-  useEffect(() => {
-    setLoading(false);
-    if (data && !data.error) {
-      if (data.data) {
-        const { data: fechData } = data;
+  // useEffect(() => {
+  //   setLoading(false);
+  //   if (data && !data.error) {
+  //     if (data.data) {
+  //       const { data: fechData } = data;
 
-        if (fechData.code === 200) {
-          // handleChangeToken();
-          // navigate("/");
-          setShowCapCode(true);
-        }
-      }
-      return;
-    }
+  //       if (fechData.code === 200) {
+  //         // handleChangeToken();
+  //         // navigate("/");
+  //       }
+  //     }
+  //     return;
+  //   }
 
-    if (data.error) {
-      handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: data.error } });
-      return;
-    }
-  }, [data]);
+  //   if (data.error) {
+  //     handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: data.error } });
+  //     return;
+  //   }
+  // }, [data]);
 
   return (
     <div className={`${styles["container-login"]} animate__animated animate__fadeIn`}>
@@ -238,7 +247,7 @@ export const FormLogin = () => {
         onHide={() => {
           setCapCode("");
           setShowCapCode(false);
-          setInvalidCapcode(false)
+          setInvalidCapcode(false);
         }}>
         <InputOtp
           length={4}
