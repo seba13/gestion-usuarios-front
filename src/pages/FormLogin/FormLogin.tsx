@@ -238,6 +238,7 @@ export const FormLogin = () => {
         onHide={() => {
           setCapCode("");
           setShowCapCode(false);
+          setInvalidCapcode(false)
         }}>
         <InputOtp
           length={4}
