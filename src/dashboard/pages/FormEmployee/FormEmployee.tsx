@@ -411,7 +411,7 @@ export const FormEmployee = () => {
 
           setTimeout(() => {
             navigate("/");
-          }, 500);
+          }, 2000);
         } else {
           handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: "Error al registrar empleado" } });
         }
