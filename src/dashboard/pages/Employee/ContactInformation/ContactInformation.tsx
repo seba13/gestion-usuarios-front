@@ -125,6 +125,7 @@ export const ContactInformation = ({
         name="telefono"
         value={form.telefono.value}
         onChange={(e) => setValue(e.target.value, e.target.name, e.target.type, e.target.required)}
+        keyfilter="pnum"
         required={true}
         invalid={firstPressed.second && errors && errors.telefono ? true : false || false}
       />

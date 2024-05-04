@@ -409,7 +409,9 @@ export const FormEmployee = () => {
         if (response.code === 200) {
           handleAddNotification({ propNotification: { id: Date.now(), type: "success", message: "Empleado registrado con éxito" } });
 
-          navigate("/");
+          setTimeout(() => {
+            navigate("/");
+          }, 500);
         } else {
           handleAddNotification({ propNotification: { id: Date.now(), type: "error", message: "Error al registrar empleado" } });
         }

@@ -130,6 +130,7 @@ export const FormLogin = () => {
           }
         })
         .catch(() => {
+          console.log("entra en catch");
           setShowCapCode(false);
         });
 
