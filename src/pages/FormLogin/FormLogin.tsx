@@ -231,7 +231,14 @@ export const FormLogin = () => {
         <Button label={"Recuperar Contraseña"} onClick={() => handleRecoveryEmail()}></Button>
       </Dialog>
 
-      <Dialog header="Ingrese código de acceso enviado al email registrado" visible={showCapCode} style={{ width: "50vw" }} onHide={() => setShowCapCode(false)}>
+      <Dialog
+        header="Ingrese código de acceso enviado al email registrado 🔐"
+        visible={showCapCode}
+        style={{ width: "50vw" }}
+        onHide={() => {
+          setCapCode("");
+          setShowCapCode(false);
+        }}>
         <InputOtp
           length={4}
           value={capCode}
