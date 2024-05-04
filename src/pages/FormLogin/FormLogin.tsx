@@ -138,8 +138,6 @@ export const FormLogin = () => {
     } else {
       setInvalidCapcode(true);
     }
-
-    setShowCapCode(false);
   };
 
   useEffect(() => {
@@ -245,7 +243,7 @@ export const FormLogin = () => {
             }
           }}></InputOtp>
 
-        <Button label="Enviar código" className="mt-2" onClick={() => handleSubmitCapCode()}></Button>
+        <Button label="Validar código" className="mt-2" onClick={() => handleSubmitCapCode()}></Button>
       </Dialog>
     </div>
   );
